@@ -1,58 +1,71 @@
-import { useState } from "react";
-import { FacebookLogo, InstagramLogo, LinkedinLogo, ToggleLeft, ToggleRight, WhatsappLogo } from "phosphor-react";
-import Button from "./componentes/Button"; // Certifique-se de que Button está corretamente importado
+import { useState } from "react"; 
+import { FacebookLogo, InstagramLogo, LinkedinLogo, ToggleLeft, ToggleRight, WhatsappLogo } from "phosphor-react"; // Icones
+import Button from "./componentes/Button"; // Importação do componente button
 
 function App() {
-  const [clicado, setClicado] = useState(false);
+
+  function getIncialDarkMode () {  // Cria o localStorage e armazena o dado
+
+    const darkModeLocalStorage = localStorage.getItem("darkMode");
+
+    return darkModeLocalStorage === "true" ? true : false; 
+
+
+  }
+
+  const [clicado, setClicado] = useState(getIncialDarkMode());  // Guarda o valor (quando atualiza a pagina continua no modo em que está selecionado)
+
 
   const interruptor = () => {
-    setClicado(!clicado); // interruptor liga o modo escuro / desativa
-  };
+    setClicado(!clicado); // Interruptor liga o modo escuro / desativa
+
+    // Set in local Storage
+
+    localStorage.setItem("darkMode", !clicado);  // Armazena o dado com a chave (key) e o valor (value);
+   };
+
+  function redirectPage(url) { //  Ajuda a capturar melhor os links com a tag <a>
+
+    window.open(url, "_blank"); // Ao botar url chamar na tag que você quer o link       
+
+  }
 
   return (
-    <div className={`w-full h-screen ${clicado ?  'bg-gray-900 text-white' : 'bg-white text-black'}`}>
+    <div className={`w-full h-screen ${clicado ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
       {/* Header */}
       <header className={`p-4 flex justify-end ${clicado ? 'bg-gray-900' : 'bg-white'}`}>
         <button className="cursor-pointer" onClick={interruptor}>
-          {clicado ?  <ToggleRight size={32} /> : <ToggleLeft size={30} />}
+          {clicado ? <ToggleRight size={32} /> : <ToggleLeft size={30} />}  {/* serve para mudar de um icone para o outro */}
+         
         </button>
       </header>
-
       <main className="w-full mt-25 flex justify-center items-center">
+
         {/* Card */}
-        <section className={`border ${clicado ?  'border-gray-700' : 'border-gray-400'} rounded-lg p-6 w-100 h-115 flex flex-col justify-center items-center gap-4 shadow hover:shadow-xl transition-shadow ${clicado ?  'bg-gray-800' : 'bg-white'}`}>
-          <img className="w-32 h-32 rounded-full border-gray-300 border-4" src="https://avatars.githubusercontent.com/u/189457240?v=4" alt="kauansantos01" />
-          <h1 className="font-bold text-2xl">Kauan Santos</h1>
-          <p>Developer Full Stack</p>
+        <section className={`border ${clicado ? 'border-white text-white' : 'border-gray-400 text-black'} rounded-lg p-6 w-100 h-115 flex flex-col justify-center items-center gap-4 shadow hover:shadow-xl transition-shadow ${clicado ? 'bg-gray-800' : 'bg-white'}`}>
+          <img className={`w-32 h-32 rounded-full ${clicado ? 'border-white' : 'border-gray-300'} border-4`} src="https://avatars.githubusercontent.com/u/189457240?v=4" alt="kauansantos01" />
+          <h1 className="font-bold mt-0 text-2xl">Kauan Santos</h1>
+          <p>Desenvolvedor Full Stack</p>
 
           {/* Seção de links */}
           <div className="space-y-4">
-          <a href="https://www.instagram.com/kn.santz_" className="flex">
-          <Button>
-              
-              <InstagramLogo size={24} className="text-black "/>
 
+
+            <Button onClick={() => redirectPage("https://www.instagram.com/kn.santz_?igsh=d21vcXV6ampnODRp&utm_source=qr")}>   {/* usar uma tag com o nome da function criada, e colocar o link dentro da aerofuncion como parâmetro */}
+              <InstagramLogo size={24} className="text-black " />
               <p className="text-black">Instagram</p>
-
             </Button>
 
-           </a> 
-
-           <a href="https://www.linkedin.com/in/kauansantosdev/" className="flex">
-
-           <Button>
-              <LinkedinLogo size={24} className="text-black"/>
+            <Button onClick={() => redirectPage("https://www.linkedin.com/in/kauansantosdev/")}>  {/* usar uma tag com o nome da function criada, e colocar o link dentro da aerofuncion como parâmetro */}
+              <LinkedinLogo size={24} className="text-black" />
               <p className="text-black">Linkedin</p>
             </Button>
-           
-           </a>
 
-           <a href="https://w.app/tiosau" className="flex">
-           <Button>
-           <WhatsappLogo size={24} className="text-black"/>
-              <p className="text-black">Whatzapp</p>
+            <Button onClick={() => redirectPage("https://wa.link/a6eqr1")}>   {/* usar uma tag com o nome da function criada, e colocar o link dentro da aerofuncion como parâmetro */}
+              <WhatsappLogo size={24} className="text-black" />
+              <p className="text-black">Whatsapp</p>
             </Button>
-           </a>
+
           </div>
         </section>
       </main>
